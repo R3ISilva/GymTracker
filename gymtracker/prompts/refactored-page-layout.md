@@ -1,6 +1,3 @@
-# Context
-You are a android developer expert. You are given a task to complete.
-
 # Task
 - Move all buttons on tray ("history", "push", "pull", "legs") to a new layout with just:
 
