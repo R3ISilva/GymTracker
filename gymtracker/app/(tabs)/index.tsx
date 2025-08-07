@@ -97,7 +97,7 @@ export default function HomeScreen() {
       }
     >
       <ThemedView style={styles.header}>
-        <ThemedText type="title" style={styles.title}>Workout History</ThemedText>
+        <ThemedText type="title" style={styles.title}>Workout Stats</ThemedText>
         <ThemedText style={styles.subtitle}>
           {workoutHistory.length} total sets logged
         </ThemedText>
@@ -107,7 +107,7 @@ export default function HomeScreen() {
         <ThemedView style={styles.emptyState}>
           <ThemedText style={styles.emptyText}>No workouts logged yet</ThemedText>
           <ThemedText style={styles.emptySubtext}>
-            Go to the Push tab to start tracking your workouts
+            Go to the Workout tab to start tracking your workouts
           </ThemedText>
         </ThemedView>
       ) : (
