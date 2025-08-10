@@ -1,0 +1,83 @@
+[
+    {
+        "id": "1",
+        "name": "Push",
+        "description": "Chest, Shoulders, Triceps",
+        "exercises": [
+            {
+                "name": "Bench Press",
+                "video": "https://cdn.prod.website-files.com/66c501d753ae2a8c705375b6/67f015f49341927eeca66234_67730577d8fbb813ce257ce9_BenchPress.gif"
+            },
+            {
+                "name": "Seated Dumbbell Shoulder Press",
+                "video": "https://barbend.com/wp-content/uploads/2023/10/seated-dumbbell-shoulder-press-barbend-movement-gif-masters-2.gif"
+            },
+            {
+                "name": "Side Lateral Raises",
+                "video": "https://cdn.jefit.com/assets/img/exercises/gifs/32.gif"
+            },
+            {
+                "name": "Triceps Pushdown",
+                "video": "https://cdn.shopify.com/s/files/1/0618/9462/3460/files/ezgif_com-gif-maker-1.gif"
+            },
+            {
+                "name": "Overhead Triceps Extension",
+                "video": "https://gymvisual.com/img/p/1/8/5/9/6/18596.gif"
+            }
+        ]
+    },
+    {
+        "id": "2",
+        "name": "Pull",
+        "description": "Back, Biceps, Rear Delts",
+        "exercises": [
+            {
+                "name": "Bent-over Row",
+                "video": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Bent-Over-Row.gif"
+            },
+            {
+                "name": "Pull Ups",
+                "video": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pull-up.gif"
+            },
+            {
+                "name": "Barbell Shrugs",
+                "video": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Shrug.gif"
+            },
+            {
+                "name": "Face Pulls",
+                "video": "https://fitnessprogramer.com/wp-content/uploads/2022/05/Face-pull.gif"
+            },
+            {
+                "name": "Barbell Curl",
+                "video": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Curl.gif"
+            },
+            {
+                "name": "Dumbbell Hammer Curl",
+                "video": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Hammer-Curl.gif"
+            }
+        ]
+    },
+    {
+        "id": "3",
+        "name": "Legs",
+        "description": "Quads, Hamstrings, Calves",
+        "exercises": [
+            {
+                "name": "Squats",
+                "video": "https://fitnessprogramer.com/wp-content/uploads/2021/02/BARBELL-SQUAT.gif"
+            },
+            {
+                "name": "Romanian deadlifts",
+                "video": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Romanian-Deadlift.gif"
+            },
+            {
+                "name": "Leg press",
+                "video": "https://fitnessprogramer.com/wp-content/uploads/2015/11/Leg-Press.gif"
+            },
+            {
+                "name": "Calfraise",
+                "video": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Calf-Raise.gif"
+            }
+        ]
+    }
+]

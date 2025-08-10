@@ -1,13 +1,18 @@
 import { useRouter } from 'expo-router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+import exercisesData from '../../Exercises.json';
 
 export default function WorkoutScreen() {
   const router = useRouter();
+  const [workouts, setWorkouts] = useState<any[]>([]);
+
+  useEffect(() => {
+    setWorkouts(exercisesData);
+  }, []);
 
   const navigateToWorkout = (workoutType: string) => {
     router.navigate(`/workouts/${workoutType}` as any);
@@ -21,38 +26,20 @@ export default function WorkoutScreen() {
       </ThemedView>
 
       <ThemedView style={styles.workoutButtonsContainer}>
-        <TouchableOpacity 
-          style={styles.workoutButton}
-          onPress={() => navigateToWorkout('push')}
-        >
-          <IconSymbol size={48} name="figure.strengthtraining.traditional" color="#007AFF" />
-          <ThemedText type="subtitle" style={styles.workoutButtonTitle}>Push</ThemedText>
-          <ThemedText style={styles.workoutButtonDescription}>
-            Chest, Shoulders, Triceps
-          </ThemedText>
-        </TouchableOpacity>
-
-        <TouchableOpacity 
-          style={styles.workoutButton}
-          onPress={() => navigateToWorkout('pull')}
-        >
-          <IconSymbol size={48} name="arrow.down.circle" color="#007AFF" />
-          <ThemedText type="subtitle" style={styles.workoutButtonTitle}>Pull</ThemedText>
-          <ThemedText style={styles.workoutButtonDescription}>
-            Back, Biceps, Rear Delts
-          </ThemedText>
-        </TouchableOpacity>
-
-        <TouchableOpacity 
-          style={styles.workoutButton}
-          onPress={() => navigateToWorkout('legs')}
-        >
-          <IconSymbol size={48} name="figure.walk" color="#007AFF" />
-          <ThemedText type="subtitle" style={styles.workoutButtonTitle}>Legs</ThemedText>
-          <ThemedText style={styles.workoutButtonDescription}>
-            Quads, Hamstrings, Glutes, Calves
-          </ThemedText>
-        </TouchableOpacity>
+        {workouts.map((workout) => (
+          <TouchableOpacity 
+            key={workout.id}
+            style={styles.workoutButton}
+            onPress={() => navigateToWorkout(workout.name.toLowerCase())}
+          >
+            <ThemedText type="subtitle" style={styles.workoutButtonTitle}>
+              {workout.name}
+            </ThemedText>
+            <ThemedText style={styles.workoutButtonDescription}>
+              {workout.description}
+            </ThemedText>
+          </TouchableOpacity>
+        ))}
       </ThemedView>
     </ThemedView>
   );
