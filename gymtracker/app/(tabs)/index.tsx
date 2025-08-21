@@ -1,35 +1,19 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-
-interface WorkoutEntry {
-  id: string;
-  exercise: string;
-  reps: string;
-  weight: string;
-  notes: string;
-  date: string;
-}
+import { WorkoutEntry, loadWorkoutHistory } from '@/utils/workoutStorage';
 
 export default function HomeScreen() {
   const [workoutHistory, setWorkoutHistory] = useState<WorkoutEntry[]>([]);
   const [refreshing, setRefreshing] = useState(false);
 
-  const loadWorkoutHistory = async () => {
+  const loadWorkoutHistoryData = async () => {
     try {
-      const history = await AsyncStorage.getItem('workoutHistory');
-      if (history) {
-        const parsedHistory: WorkoutEntry[] = JSON.parse(history);
-        // Sort by date, most recent first
-        const sortedHistory = parsedHistory.sort((a, b) => 
-          new Date(b.date).getTime() - new Date(a.date).getTime()
-        );
-        setWorkoutHistory(sortedHistory);
-      }
+      const history = await loadWorkoutHistory();
+      setWorkoutHistory(history);
     } catch (error) {
       console.error('Error loading workout history:', error);
     }
@@ -37,13 +21,13 @@ export default function HomeScreen() {
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    await loadWorkoutHistory();
+    await loadWorkoutHistoryData();
     setRefreshing(false);
   }, []);
 
   useFocusEffect(
     useCallback(() => {
-      loadWorkoutHistory();
+      loadWorkoutHistoryData();
     }, [])
   );
 
