@@ -1,7 +1,8 @@
 import { useFocusEffect } from '@react-navigation/native';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
 
+import { ExerciseGraph } from '@/components/ExerciseGraph';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { WorkoutEntry, loadWorkoutHistory } from '@/utils/workoutStorage';
@@ -30,6 +31,16 @@ export default function HomeScreen() {
       loadWorkoutHistoryData();
     }, [])
   );
+
+  const byExercise = useMemo(() => {
+    const map = new Map<string, WorkoutEntry[]>();
+    for (const e of workoutHistory) {
+      const arr = map.get(e.exercise) ?? [];
+      arr.push(e);
+      map.set(e.exercise, arr);
+    }
+    return Array.from(map.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+  }, [workoutHistory]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -72,6 +83,14 @@ export default function HomeScreen() {
     </ThemedView>
   );
 
+  const renderGraphs = () => (
+    <>
+      {byExercise.map(([name, entries]) => (
+        <ExerciseGraph key={name} title={name} entries={entries} />
+      ))}
+    </>
+  );
+
   return (
     <ScrollView 
       style={styles.container}
@@ -95,7 +114,11 @@ export default function HomeScreen() {
           </ThemedText>
         </ThemedView>
       ) : (
-        workoutHistory.map(renderWorkoutEntry)
+        <>
+          {renderGraphs()}
+          <ThemedView style={styles.separatorLine} />
+          {workoutHistory.map(renderWorkoutEntry)}
+        </>
       )}
     </ScrollView>
   );
@@ -190,5 +213,10 @@ const styles = StyleSheet.create({
     color: '#666',
     fontSize: 14,
     textAlign: 'center',
+  },
+  separatorLine: {
+    height: 1,
+    backgroundColor: '#222',
+    marginVertical: 12,
   },
 });
