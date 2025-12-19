@@ -1,6 +1,7 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useMemo, useState } from 'react';
-import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
+import { Pressable, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 
 import { ExerciseGraph } from '@/components/ExerciseGraph';
 import { ThemedText } from '@/components/ThemedText';
@@ -91,6 +92,25 @@ export default function HomeScreen() {
     </>
   );
 
+  const handleClearData = useCallback(async () => {
+    try {
+      await AsyncStorage.removeItem('workoutHistory');
+      await loadWorkoutHistoryData();
+    } catch (e) {
+      console.error('Error clearing workout history:', e);
+    }
+  }, []);
+
+  const handleImportData = useCallback(async () => {
+    try {
+      const data: WorkoutEntry[] = require('../../data/workoutHistory-2026.json');
+      await AsyncStorage.setItem('workoutHistory', JSON.stringify(data));
+      await loadWorkoutHistoryData();
+    } catch (e) {
+      console.error('Error importing workout history:', e);
+    }
+  }, []);
+
   return (
     <ScrollView 
       style={styles.container}
@@ -104,6 +124,14 @@ export default function HomeScreen() {
         <ThemedText style={styles.subtitle}>
           {workoutHistory.length} total sets logged
         </ThemedText>
+        <View style={styles.buttonRow}>
+          <Pressable onPress={handleImportData} style={({ pressed }) => [styles.actionButton, pressed && styles.buttonPressed]}> 
+            <ThemedText style={styles.buttonText}>Import 2026 JSON</ThemedText>
+          </Pressable>
+          <Pressable onPress={handleClearData} style={({ pressed }) => [styles.actionButton, styles.destructiveButton, pressed && styles.buttonPressed]}> 
+            <ThemedText style={styles.buttonText}>Clear Data</ThemedText>
+          </Pressable>
+        </View>
       </ThemedView>
 
       {workoutHistory.length === 0 ? (
@@ -135,6 +163,31 @@ const styles = StyleSheet.create({
   header: {
     marginBottom: 24,
     alignItems: 'center',
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 12,
+  },
+  actionButton: {
+    backgroundColor: '#2a2a2a',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#3a3a3a',
+  },
+  destructiveButton: {
+    borderColor: '#553333',
+    backgroundColor: '#332222',
+  },
+  buttonPressed: {
+    opacity: 0.8,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
   },
   title: {
     color: '#fff',
