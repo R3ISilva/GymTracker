@@ -6,6 +6,7 @@ import { Pressable, RefreshControl, ScrollView, StyleSheet, View } from 'react-n
 import { ExerciseGraph } from '@/components/ExerciseGraph';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { WorkoutEntryCard } from '@/components/WorkoutEntryCard';
 import { WorkoutEntry, loadWorkoutHistory } from '@/utils/workoutStorage';
 
 export default function HomeScreen() {
@@ -42,47 +43,6 @@ export default function HomeScreen() {
     }
     return Array.from(map.entries()).sort((a, b) => a[0].localeCompare(b[0]));
   }, [workoutHistory]);
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
-
-  const renderWorkoutEntry = (entry: WorkoutEntry) => (
-    <ThemedView key={entry.id} style={styles.workoutEntry}>
-      <ThemedView style={styles.workoutHeader}>
-        <ThemedText type="subtitle" style={styles.exerciseName}>
-          {entry.exercise}
-        </ThemedText>
-        <ThemedText style={styles.dateText}>
-          {formatDate(entry.date)}
-        </ThemedText>
-      </ThemedView>
-      
-      <ThemedView style={styles.workoutDetails}>
-        <ThemedView style={styles.statGroup}>
-          <ThemedText style={styles.statValue}>{entry.reps}</ThemedText>
-          <ThemedText style={styles.statLabel}>reps</ThemedText>
-        </ThemedView>
-        
-        <ThemedText style={styles.separator}>×</ThemedText>
-        
-        <ThemedView style={styles.statGroup}>
-          <ThemedText style={styles.statValue}>{entry.weight}</ThemedText>
-          <ThemedText style={styles.statLabel}>kg</ThemedText>
-        </ThemedView>
-      </ThemedView>
-      
-      {entry.notes ? (
-        <ThemedText style={styles.notesText}>{entry.notes}</ThemedText>
-      ) : null}
-    </ThemedView>
-  );
 
   const renderGraphs = () => (
     <>
@@ -145,7 +105,9 @@ export default function HomeScreen() {
         <>
           {renderGraphs()}
           <ThemedView style={styles.separatorLine} />
-          {workoutHistory.map(renderWorkoutEntry)}
+          {workoutHistory.map((entry) => (
+            <WorkoutEntryCard key={entry.id} entry={entry} showExerciseName={true} />
+          ))}
         </>
       )}
     </ScrollView>
@@ -198,60 +160,6 @@ const styles = StyleSheet.create({
   subtitle: {
     color: '#999',
     fontSize: 16,
-  },
-  workoutEntry: {
-    backgroundColor: '#1a1a1a',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
-    borderLeftWidth: 4,
-    borderLeftColor: '#007AFF',
-  },
-  workoutHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  exerciseName: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: '600',
-    flex: 1,
-  },
-  dateText: {
-    color: '#999',
-    fontSize: 14,
-  },
-  workoutDetails: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 16,
-  },
-  statGroup: {
-    alignItems: 'center',
-  },
-  statValue: {
-    color: '#fff',
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  statLabel: {
-    color: '#999',
-    fontSize: 12,
-    marginTop: 2,
-  },
-  separator: {
-    color: '#666',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  notesText: {
-    color: '#ccc',
-    fontSize: 14,
-    marginTop: 8,
-    fontStyle: 'italic',
   },
   emptyState: {
     alignItems: 'center',

@@ -1,10 +1,12 @@
+import { useFocusEffect } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, Image, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { saveWorkoutEntry } from '@/utils/workoutStorage';
+import { WorkoutEntryCard } from '@/components/WorkoutEntryCard';
+import { loadWorkoutHistory, saveWorkoutEntry, WorkoutEntry } from '@/utils/workoutStorage';
 import exercisesData from '../../Exercises.json';
 
 interface Exercise {
@@ -27,6 +29,13 @@ export default function WorkoutScreen() {
   const [reps, setReps] = useState('');
   const [weight, setWeight] = useState('');
   const [notes, setNotes] = useState('');
+  const [history, setHistory] = useState<WorkoutEntry[]>([]);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadWorkoutHistory().then(setHistory);
+    }, [])
+  );
 
   useEffect(() => {
     setWorkouts(exercisesData as Workout[]);
@@ -183,6 +192,18 @@ export default function WorkoutScreen() {
               </ThemedText>
             </TouchableOpacity>
           </ThemedView>
+
+          {history.filter(e => e.exercise === currentExercise.name).length > 0 && (
+            <ThemedView style={styles.historyContainer}>
+              <ThemedText style={styles.historyTitle}>Recent History</ThemedText>
+              {history
+                .filter(e => e.exercise === currentExercise.name)
+                .slice(0, 3)
+                .map((entry) => (
+                  <WorkoutEntryCard key={entry.id} entry={entry} style={{ marginBottom: 0 }} />
+                ))}
+            </ThemedView>
+          )}
         </ScrollView>
       </ThemedView>
     );
@@ -352,5 +373,15 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+  },
+  historyContainer: {
+    marginTop: 32,
+    gap: 16,
+  },
+  historyTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 8,
   },
 });
